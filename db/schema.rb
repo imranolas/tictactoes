@@ -11,7 +11,34 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140201113609) do
+ActiveRecord::Schema.define(:version => 20140201154836) do
+
+  create_table "games", :force => true do |t|
+    t.string   "name"
+    t.string   "status"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  create_table "moves", :force => true do |t|
+    t.integer  "player_id"
+    t.integer  "grid_location"
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
+  end
+
+  add_index "moves", ["player_id"], :name => "index_moves_on_player_id"
+
+  create_table "players", :force => true do |t|
+    t.integer  "user_id"
+    t.integer  "game_id"
+    t.string   "symbol"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  add_index "players", ["game_id"], :name => "index_players_on_game_id"
+  add_index "players", ["user_id"], :name => "index_players_on_user_id"
 
   create_table "users", :force => true do |t|
     t.string   "name"
