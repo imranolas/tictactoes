@@ -1,0 +1,13 @@
+<p>
+  <%= game.name %>
+  <% if game.capacity? && !game.playing?(current_user.id) %>
+  <%= form_for(game) do |f| %>
+    <%= f.hidden_field :id %>
+    <%= f.fields_for :players do |ff| %>
+      <%= ff.hidden_field :user_id %>
+      <%= ff.hidden_field :symbol %>
+    <% end %>
+    <%= f.submit "Join" %>
+  <% end %>  
+  <% end %>
+</p>

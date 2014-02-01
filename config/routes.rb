@@ -1,4 +1,5 @@
 Tictactoe::Application.routes.draw do
+  resources :home
   resources :moves
 
 
