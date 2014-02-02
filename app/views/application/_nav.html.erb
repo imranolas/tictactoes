@@ -1,4 +1,4 @@
-<h1 class='logo'>GAME-O-MANIA</h1>
+<h1 class='logo'>Game app</h1>
 <div class="user"> 
     <% if current_user %>
     logged in as <%= current_user.name %> | <%= link_to 'Log out', logout_path %>
@@ -8,7 +8,7 @@
 </div>
 <nav>
   <ul>
-    <li><%= link_to 'Home', root_path %></li>
+    <li><%= link_to 'Home', home_index_path %></li>
     <li></li>
     <li></li>
     <li></li>

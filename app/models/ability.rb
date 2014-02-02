@@ -6,12 +6,14 @@ class Ability
     
       user ||= User.new # guest user (not logged in)
       if user.persisted?
-        can :manage, :all
+        can :create, :all
       else
-        can :read, :all
         can :create, User
       end
-    
+      can :update, Game, Game.all do |game|
+        game.users_turn?(user.id) unless game.completed?
+      end
+
     # The first argument to `can` is the action you are giving the user 
     # permission to do.
     # If you pass :manage it will apply to every action. Other common actions

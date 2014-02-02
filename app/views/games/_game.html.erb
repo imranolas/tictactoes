@@ -1,5 +1,6 @@
 <p>
-  <%= game.name %>
+  <%= game.name %><br>
+  <%= game.users.map(&:name).join(" vs ") %>
   <% if game.capacity? && !game.playing?(current_user.id) %>
   <%= form_for(game) do |f| %>
     <%= f.hidden_field :id %>
@@ -10,4 +11,5 @@
     <%= f.submit "Join" %>
   <% end %>  
   <% end %>
+  <%= link_to 'View game', play_path(game.id) %>
 </p>
