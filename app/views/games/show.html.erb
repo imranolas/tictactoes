@@ -17,3 +17,8 @@
 
   <% end %>
   </div>
+  <div>
+    <% @game.players.each do |player| %>
+      <p><%= player.symbol %> <%= player.user.name %></p>
+    <% end %>
+  </div>

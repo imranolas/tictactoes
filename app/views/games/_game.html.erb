@@ -11,5 +11,16 @@
     <%= f.submit "Join" %>
   <% end %>  
   <% end %>
-  <%= link_to 'View game', play_path(game.id) %>
+
+  <% if game.completed? %>
+    <br>Completed. <%= game.result %>
+  <% elsif game.users_turn?(current_user) %>
+    <br>Your turn to move.
+  <% elsif game.capacity? %>
+    <br>Waiting for player to join.
+  <% else %>
+    <br>Wating for <%= game.user_player(current_user).opponent.user.name %>.
+  <% end %>
+
+    <%= link_to 'View game', play_path(game.id) %>
 </p>

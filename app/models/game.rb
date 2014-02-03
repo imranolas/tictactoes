@@ -5,8 +5,6 @@ class Game < ActiveRecord::Base
   has_many :moves, through: :players
   accepts_nested_attributes_for :players
 
-  before_save :check_completed
-
   def capacity?
     players.reject(&:new_record?).length < 2
   end
@@ -34,17 +32,33 @@ class Game < ActiveRecord::Base
     self.save
   end
 
-  def users_turn?(id)
+  def users_turn?(user)
     last_move = moves.order('created_at DESC').first
     if last_move
-      players.where('id != ?', last_move.player).first.user.id == id
+      players.where('id != ?', last_move.player).first.user == user
     else
-      players.where(id: starting_player).first.user.id == id
+      players.where(id: starting_player).first.try(:user) == user
     end
   end
 
   def last_player
     moves.order('created_at DESC').first.player.user
+  end
+
+  def user_player(user)
+    players.where(user_id: user).first
+  end
+
+  def self.users_games(user)
+    self.all.select { |game| game.players.find_by_user_id(user) }.reject(&:completed?)
+  end
+
+  def self.games_to_join(user)
+    self.all.select(&:capacity?).reject { |game| game.players.find_by_user_id(user) }
+  end
+
+  def self.completed_games(user)
+    self.all.select(&:completed?).select { |game| game.players.find_by_user_id(user) }
   end
 
   ########### Tic Tac Toe Logic #########################
@@ -71,8 +85,18 @@ class Game < ActiveRecord::Base
     nil
   end
 
+  def game_over?
+    if winner
+      :win
+    elsif !game_state.include?(nil)
+      :draw
+    else
+      :pending
+    end
+  end
+
   def completed?
-    !!winner || !game_state.include?(nil)
+    ['win', 'draw'].include?(status)
   end
 
   def result
@@ -81,11 +105,5 @@ class Game < ActiveRecord::Base
     elsif !game_state.include?(nil)
       "Draw. No winner."
     end
-  end
-
-  private
-
-  def check_completed
-    status = :completed if completed?
   end
 end

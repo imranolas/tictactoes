@@ -11,7 +11,7 @@ class Ability
         can :create, User
       end
       can :update, Game, Game.all do |game|
-        game.users_turn?(user.id) unless game.completed?
+        game.users_turn?(user) unless game.completed?
       end
 
     # The first argument to `can` is the action you are giving the user 

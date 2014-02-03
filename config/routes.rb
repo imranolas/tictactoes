@@ -11,6 +11,7 @@ Tictactoe::Application.routes.draw do
   get '/login', to: 'sessions#new', as: 'login'
   get '/logout', to: 'sessions#destroy', as: 'logout'
   get '/play/:game_id', to: 'games#show', as: 'play'
+  get '/scoreboard', to: 'home#scoreboard', as: 'scoreboard'
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

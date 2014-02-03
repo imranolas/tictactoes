@@ -1,10 +1,12 @@
 class MovesController < ApplicationController
   
   def create
-    @move = Move.new(params[:move])
-    if @move.save
-      redirect_to "/play/#{@move.player.game.id}"
-    end
+    @move = Move.create(params[:move])
+    @game = @move.player.game
+    @game.status = @game.game_over?
+    @game.save
+
+    redirect_to play_path(@game)
   end
 
 end

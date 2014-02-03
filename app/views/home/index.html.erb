@@ -1,2 +1,11 @@
 <%= create_link Game.new %>
-<%= render @games %>
+<%= link_to 'Scoreboard', scoreboard_path %>
+
+<h1>Current Games</h1>
+<%= render(@mygames) if @mygames %>
+
+<h1>Available games</h1>
+<%= render(@games_to_join) if @games_to_join %>
+
+<h1>Completed Games</h1>
+<%= render(@completed) if @completed %>
