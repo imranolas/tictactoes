@@ -1,12 +1,4 @@
-  <div class='game_status'>
-    <% if @game.completed? %>
-      <%= @game.result %>
-    <% else %>
-      <p><%= @game.current_player.user.name %>'s turn to move</p>
-    <% end %>
-  </div>
-
-  <div class="board">
+<div class="board">
   <% @game.game_state.each_index do |i| %>
     <div class="grid_item grid_num_<%= i %>">
       <% if @game.game_state[i].nil? && can?(:update, @game) %>
@@ -17,14 +9,16 @@
         <% end %>
             
       <% else %>
-        <%= @game.game_state[i] %>
+        <div class='value'>
+          <%= @game.game_state[i] %>
+        </div>
       <% end %>
     </div>
 
   <% end %>
   </div>
-  <div class='legend'>
+  <div>
     <% @game.players.each do |player| %>
       <p><%= player.symbol %> <%= player.user.name %></p>
     <% end %>
-  </div>
+</div>

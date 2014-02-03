@@ -5,6 +5,28 @@ class Game < ActiveRecord::Base
   has_many :moves, through: :players
   accepts_nested_attributes_for :players
 
+######## Class methods to return game sets ######
+
+  def self.find_games_for(user)
+    @games_for_user ||= self.joins(players: :user).where(users: {id: user.id})
+  end
+
+  def self.users_games(user)
+    find_games_for(user).reject(&:completed?)
+  end
+
+  def self.games_to_join(user)
+    # self.where(starting_player: nil)
+    self.all.select(&:capacity?).reject { |game| game.players.find_by_user_id(user) }
+  end
+
+  def self.completed_games(user)
+    find_games_for(user).select(&:completed?)
+  end
+
+
+####### Game methods ######
+
   def capacity?
     players.reject(&:new_record?).length < 2
   end
@@ -14,17 +36,19 @@ class Game < ActiveRecord::Base
   end
 
   def game_state
-    state = [nil]*9
-    players.each do |player|
-  
-      if player.moves.any?
-        symbol = player.symbol
-        locations = player.moves.map(&:grid_location)
-        locations.each { |i| state[i] = symbol }
+    unless @state
+      @state = [nil]*9
+      players.each do |player|
+    
+        if player.moves.any?
+          symbol = player.symbol
+          locations = player.moves.map(&:grid_location)
+          locations.each { |i| @state[i] = symbol }
+        end
+    
       end
-  
     end
-    state
+      @state
   end
 
   def set_starting_player
@@ -33,33 +57,21 @@ class Game < ActiveRecord::Base
   end
 
   def users_turn?(user)
-    last_move = moves.order('created_at DESC').first
-    if last_move
-      players.where('id != ?', last_move.player).first.user == user
-    else
-      players.where(id: starting_player).first.try(:user) == user
-    end
+    current_player.try(:user) == user
   end
 
   def last_player
-    moves.order('created_at DESC').first.player.user
+    moves.order('created_at DESC').first.try(:player)
   end
 
-  def user_player(user)
-    players.where(user_id: user).first
+  def current_player
+    if last_player
+      players.where('id != ?', last_player.id).first
+    else
+      Player.find_by_id(starting_player)
+    end
   end
 
-  def self.users_games(user)
-    self.all.select { |game| game.players.find_by_user_id(user) }.reject(&:completed?)
-  end
-
-  def self.games_to_join(user)
-    self.all.select(&:capacity?).reject { |game| game.players.find_by_user_id(user) }
-  end
-
-  def self.completed_games(user)
-    self.all.select(&:completed?).select { |game| game.players.find_by_user_id(user) }
-  end
 
   ########### Tic Tac Toe Logic #########################
 
@@ -85,6 +97,14 @@ class Game < ActiveRecord::Base
     nil
   end
 
+  def who_won
+    last_player if winner
+  end
+
+  def who_lost
+    current_player if winner
+  end
+
   def game_over?
     if winner
       :win
@@ -101,7 +121,7 @@ class Game < ActiveRecord::Base
 
   def result
     if winner
-      "Winner is #{last_player.name}"
+      "Winner is #{last_player.user.name}"
     elsif !game_state.include?(nil)
       "Draw. No winner."
     end

@@ -8,9 +8,40 @@
  * You're free to add application-wide styles to this file and they'll appear at the top of the
  * compiled file, but it's generally better to create a new file per style scope.
  *
- *= require_self
  *= require_tree .
+ *= require_self
  */
+ body {
+  font-family: Verdana;
+  font-size: 16px;
+ }
+
+ .logo {
+  padding: 10px
+ }
+
+ h1 {
+  font-size: 150%;
+ }
+
+a {
+  text-decoration: none;
+  color: #924;
+}
+
+ nav {
+  border-top: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+  padding: 10px;
+ }
+
+ nav li {
+  display: inline;
+ }
+
+ .game_links{
+  float:left;
+ }
 
 #main {
   width: 960px;
@@ -23,20 +54,84 @@
   float:left;
   font-size: 28px;
   border: 1px solid #000;
+  vertical-align: middle;
+  line-height: 150px;
+  text-align: center;
 }
 
-.grid_button {
-  background-color:transparent;
-  display:inline-block;
-  cursor:pointer;
-  color:#000000;
-  font-family:arial;
-  font-size:28px;
-  text-decoration:none;
-  text-shadow:0px 1px 0px #2f6627;
+
+#new_move {
+  width: 100%;
+  height: 100%
+}
+
+.grid_button:hover {
+  color: #000
 }
 
 .board {
   width: 500px;
+  margin: auto;
 } 
+
+.game_list {
+  float:left;
+  margin: 20px;
+}
+
+.game_list p {
+  border-bottom: 2px dotted #333;
+  margin: 10px 0;
+  padding: 10px 0;
+}
+
+.user {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+p {
+  margin: 10px 0;
+}
+
+input {
+  padding: 10px;
+  font-size: 16px;
+}
+
+#new_game input[type='submit'] {
+  padding: 10px;
+  background-color: #ddd;
+  border: 0;
+  font-size: 16px;
+}
+
+#new_game {
+  margin: 20px;
+}
+
+.grid_button {
+  background-color:#fff;
+  display:inline-block;
+  cursor:pointer;
+  color:#ddd;
+  font-family:arial;
+  font-size:28px;
+  text-decoration:none;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+.game_status {
+  height: 40px;
+  padding: 20px;
+  text-align: center;
+  font-size: 150%;
+}
+
+.legend {
+  clear: both;
+}
 

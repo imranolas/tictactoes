@@ -19,8 +19,8 @@
   <% elsif game.capacity? %>
     <br>Waiting for player to join.
   <% else %>
-    <br>Wating for <%= game.user_player(current_user).opponent.user.name %>.
+    <br>Wating for <%= game.current_player.user.name %>.
   <% end %>
 
-    <%= link_to 'View game', play_path(game.id) %>
+   <br><%= link_to 'View game', play_path(game.id) %>
 </p>

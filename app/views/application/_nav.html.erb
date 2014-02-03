@@ -9,5 +9,9 @@
 <nav>
   <ul>
     <li><%= link_to 'Home', home_index_path %></li>
+    <% if current_user %>
+    <li><%= create_link Game.new %></li>
+    <li><%= link_to 'Scoreboard', scoreboard_path %></li>
+    <% end %>
   </ul>
 </nav>
