@@ -10,7 +10,7 @@
   <% @game.game_state.each_index do |i| %>
     <div class="grid_item grid_num_<%= i %>">
       <% if @game.game_state[i].nil? && can?(:update, @game) %>
-        <%= form_for(@move) do |f| %>
+        <%= form_for(@moves) do |f| %>
             <%= f.hidden_field :player_id %>
             <%= f.hidden_field :grid_location, { value: i } %>
             <%= f.submit "#{@current_player.symbol}", class: 'grid_button' %>

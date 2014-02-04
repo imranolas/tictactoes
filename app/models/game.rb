@@ -5,6 +5,8 @@ class Game < ActiveRecord::Base
   has_many :moves, through: :players
   accepts_nested_attributes_for :players
 
+  before_update :set_starting_player
+
 ######## Class methods to return game sets ######
 
   def self.find_games_for(user)
@@ -27,6 +29,16 @@ class Game < ActiveRecord::Base
 
 ####### Game methods ######
 
+  def make_move(location)
+    current_player.moves.create(grid_location: location)
+  end
+
+  def available_moves
+    moves = []
+    game_state.each_index { |i| moves << i if game_state[i].nil? }
+    moves
+  end
+
   def capacity?
     players.reject(&:new_record?).length < 2
   end
@@ -48,12 +60,7 @@ class Game < ActiveRecord::Base
     
       end
     end
-      @state
-  end
-
-  def set_starting_player
-    self.starting_player ||= players.sample.id
-    self.save
+    @state
   end
 
   def users_turn?(user)
@@ -125,5 +132,11 @@ class Game < ActiveRecord::Base
     elsif !game_state.include?(nil)
       "Draw. No winner."
     end
+  end
+
+  private
+
+  def set_starting_player
+    self.starting_player ||= players.sample.id
   end
 end
