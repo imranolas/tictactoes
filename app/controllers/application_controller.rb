@@ -1,6 +1,6 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery
-  helper_method :current_user
+  helper_method :current_user, :winning_square?
     private
 
   def current_user
@@ -10,5 +10,9 @@ class ApplicationController < ActionController::Base
       session.delete(:user_id)
       @current_user = nil
     end
+  end
+
+  def winning_square?(game, location)
+    game.winner.include?(location) if game.completed?
   end
 end

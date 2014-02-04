@@ -8,14 +8,14 @@
 
   <div class="board">
   <% @game.game_state.each_index do |i| %>
-    <div class="grid_item grid_num_<%= i %>">
+    <div class="grid_item grid_num_<%= i %> <%= 'active' if winning_square?(@game, i) %>">
       <% if @game.game_state[i].nil? && can?(:update, @game) %>
-        <%= form_for(@moves) do |f| %>
-            <%= f.hidden_field :player_id %>
+        
+          <%= form_for(@game) do |f| %>
             <%= f.hidden_field :grid_location, { value: i } %>
-            <%= f.submit "#{@current_player.symbol}", class: 'grid_button' %>
-        <% end %>
-            
+            <%= f.submit "#{@game.current_player.symbol}", class: 'grid_button' %>
+          <% end %>
+
       <% else %>
         <%= @game.game_state[i] %>
       <% end %>

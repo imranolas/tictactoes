@@ -10,11 +10,11 @@ class User < ActiveRecord::Base
   validates :password, presence: true
 
   def games_won
-    self.games.where(status: :win).select { |game| game.last_player == self }
+    self.games.where(status: :win).select { |game| game.last_player.user == self }
   end
 
   def games_lost
-    self.games.where(status: :win).select { |game| game.last_player != self }
+    self.games.where(status: :win).select { |game| game.last_player.user != self }
   end
 
   def games_drawn

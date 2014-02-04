@@ -5,12 +5,12 @@ class Game < ActiveRecord::Base
   has_many :moves, through: :players
   accepts_nested_attributes_for :players
 
-  before_update :set_starting_player
+  before_save :set_starting_player
 
-######## Class methods to return game sets ######
+######## Class methods to return game sets ########
 
   def self.find_games_for(user)
-    @games_for_user ||= self.joins(players: :user).where(users: {id: user.id})
+    self.joins(players: :user).where(users: {id: user.id})
   end
 
   def self.users_games(user)
@@ -23,14 +23,23 @@ class Game < ActiveRecord::Base
   end
 
   def self.completed_games(user)
-    find_games_for(user).select(&:completed?)
+    find_games_for(user).where('status = ? OR status = ?', 'win', 'draw')
   end
 
 
-####### Game methods ######
+####### Game methods ########
 
   def make_move(location)
     current_player.moves.create(grid_location: location)
+    update_status
+    computer_move
+  end
+
+  def computer_move
+    if current_player.user.name == 'Computer' && !self.completed?
+      current_player.moves.create(grid_location: available_moves.sample)
+    end
+      update_status
   end
 
   def available_moves
@@ -112,16 +121,6 @@ class Game < ActiveRecord::Base
     current_player if winner
   end
 
-  def game_over?
-    if winner
-      :win
-    elsif !game_state.include?(nil)
-      :draw
-    else
-      :pending
-    end
-  end
-
   def completed?
     ['win', 'draw'].include?(status)
   end
@@ -134,9 +133,25 @@ class Game < ActiveRecord::Base
     end
   end
 
-  private
-
   def set_starting_player
-    self.starting_player ||= players.sample.id
+    unless capacity?
+      self.starting_player ||= players.sample.id
+    end
   end
+
+  def game_status
+    if winner
+      :win
+    elsif !game_state.include?(nil)
+      :draw
+    else
+      :pending
+    end
+  end
+
+  def update_status
+    self.status = game_status
+    self.save
+  end
+
 end

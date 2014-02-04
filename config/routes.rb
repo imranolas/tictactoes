@@ -5,7 +5,7 @@ Tictactoe::Application.routes.draw do
   resources :games
   resources :sessions
   resources :users
-
+  post '/play_computer', to: 'games#create_computer_game', as: 'computer_game'
 
   root to: 'sessions#new'
   get '/login', to: 'sessions#new', as: 'login'

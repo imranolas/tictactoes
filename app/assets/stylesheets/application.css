@@ -59,6 +59,10 @@ a {
   text-align: center;
 }
 
+.grid_item.active {
+  background-color: #ddd;
+}
+
 
 #new_move {
   width: 100%;
@@ -133,5 +137,7 @@ input {
 
 .legend {
   clear: both;
+  text-align: center;
+  padding: 20px;
 }
 
