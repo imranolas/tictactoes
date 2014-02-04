@@ -18,8 +18,7 @@ class Game < ActiveRecord::Base
   end
 
   def self.games_to_join(user)
-    # self.where(starting_player: nil)
-    self.all.select(&:capacity?).reject { |game| game.players.find_by_user_id(user) }
+    self.where(starting_player: nil).reject { |game| game.players.find_by_user_id(user) }
   end
 
   def self.completed_games(user)
@@ -38,8 +37,8 @@ class Game < ActiveRecord::Base
   def computer_move
     if current_player.user.name == 'Computer' && !self.completed?
       current_player.moves.create(grid_location: available_moves.sample)
-    end
       update_status
+    end
   end
 
   def available_moves

@@ -13,6 +13,6 @@ class ApplicationController < ActionController::Base
   end
 
   def winning_square?(game, location)
-    game.winner.include?(location) if game.completed?
+    game.winner.include?(location) if game.status == 'win'
   end
 end
