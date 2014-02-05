@@ -11,6 +11,9 @@
  *= require_tree .
  *= require_self
  */
+
+ // @import "bootstrap";
+
  body {
   font-family: Verdana;
   font-size: 16px;
@@ -43,7 +46,7 @@ a {
   float:left;
  }
 
-#main {
+  .container {
   width: 960px;
   margin: 0 auto;
 }
@@ -81,6 +84,7 @@ a {
 .game_list {
   float:left;
   margin: 20px;
+  width: 280px;
 }
 
 .game_list p {

@@ -7,11 +7,12 @@ Tictactoe::Application.routes.draw do
   resources :users
   post '/play_computer', to: 'games#create_computer_game', as: 'computer_game'
 
-  root to: 'sessions#new'
+  root to: 'home#index'
   get '/login', to: 'sessions#new', as: 'login'
   get '/logout', to: 'sessions#destroy', as: 'logout'
+  get '/signup', to: 'users#new', as: 'signup'
   get '/play/:game_id', to: 'games#show', as: 'play'
-  get '/scoreboard', to: 'home#scoreboard', as: 'scoreboard'
+  get '/scoreboard', to: 'games#scoreboard', as: 'scoreboard'
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

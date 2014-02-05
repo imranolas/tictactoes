@@ -1,4 +1,20 @@
 class GamesController < ApplicationController
+  load_and_authorize_resource
+
+    def index
+    @games_to_join = Game.games_to_join(current_user).page(params[:join_games_page])
+    @games_to_join.each do |game|
+      game.players.build(user_id: current_user.id, symbol: 'O')
+    end
+
+    @mygames = Game.users_games(current_user).page(params[:current_game_page])
+    @completed = Game.completed_games(current_user).page(params[:page])
+
+  end
+
+  def scoreboard
+    @user = current_user
+  end
 
   def new
     @game = Game.new name: 'TicTacToe'
@@ -17,7 +33,7 @@ class GamesController < ApplicationController
   def create_computer_game
     @game = Game.create(name: 'TicTacToe')
     @game.players.create(user_id: current_user.id, symbol: 'X')
-    @game.players.create(user_id: 5, symbol: 'O')
+    @game.players.create(user_id: 1, symbol: 'O')
     @game.save
     @game.computer_move
     redirect_to @game

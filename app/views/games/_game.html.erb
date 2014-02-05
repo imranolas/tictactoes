@@ -1,15 +1,7 @@
 <p>
   <%= game.name %><br>
   <%= game.users.map(&:name).join(" vs ") %>
-  <% if game.capacity? && !game.playing?(current_user.id) %>
-    <%= form_for(Player.new) do |f| %>
-      <%= f.hidden_field :game_id, {value: game.id} %>
-      <%= f.hidden_field :symbol, {value: 'O'} %>
-      <%= f.hidden_field :user_id, {value: current_user.id} %> 
-      <%= f.submit "Join" %>
-    <% end %>  
-  <% end %>
-
+  
   <% if game.completed? %>
     <br>Completed. <%= game.result %>
   <% elsif game.users_turn?(current_user) %>

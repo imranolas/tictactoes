@@ -4,6 +4,8 @@ class Move < ActiveRecord::Base
   attr_accessible :grid_location, :player_id
   validate :location_available, :is_users_turn?, :game_incomplete?
 
+  after_create :update_game
+
   def location_available
     unless game.available_moves.include?(grid_location)
       errors.add(:grid_location, "already taken.")
@@ -18,6 +20,11 @@ class Move < ActiveRecord::Base
 
   def game_incomplete?
     errors.add(:player_id, "game is complete") if game.completed?
+  end
+
+  private
+  def update_game
+    game.update_game_status
   end
 
 end

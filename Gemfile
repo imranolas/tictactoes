@@ -10,6 +10,7 @@ gem 'cancan'
 # gem 'ransack'
 # gem 'carrierwave'
 # gem 'rmagick'
+gem 'kaminari'
 
 group :development, :test do
   gem 'pry-rails'

@@ -1,0 +1,19 @@
+<div class='row'>
+  <div class='game_list span4'>
+  <h3>Current Games</h3>
+  <%= render(@mygames) if @mygames %>
+  <%= paginate @mygames, param_name: :current_game_page %>
+  </div>
+
+  <div class='game_list span4'>
+    <h3>Available games</h3>
+    <%= (render partial: 'join_game', collection: @games_to_join) if @games_to_join %>
+    <%= paginate @games_to_join, param_name: :join_games_page %>
+  </div>
+
+  <div class='game_list span4'>
+    <h3>Completed Games</h3>
+    <%= render(@completed) if @completed %>
+    <%= paginate @completed %>
+  </div>
+</div>

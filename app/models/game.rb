@@ -3,6 +3,8 @@ class Game < ActiveRecord::Base
   has_many :players
   has_many :users, through: :players
   has_many :moves, through: :players
+  has_many :scores
+
   accepts_nested_attributes_for :players
 
   before_save :set_starting_player
@@ -14,30 +16,33 @@ class Game < ActiveRecord::Base
   end
 
   def self.users_games(user)
-    find_games_for(user).reject(&:completed?)
+    find_games_for(user).where(status: [nil, 'pending'])
   end
 
   def self.games_to_join(user)
-    self.where(starting_player: nil).reject { |game| game.players.find_by_user_id(user) }
+    self.joins(:players).where(starting_player: nil).where("players.user_id != ?", user.id)
   end
 
   def self.completed_games(user)
     find_games_for(user).where('status = ? OR status = ?', 'win', 'draw')
   end
 
+  def winning_user
+    User.joins({players: :scores}, {players: :game}).where('games.id=?', self.id).where(scores: {result: 'win'})
+  end
 
 ####### Game methods ########
 
   def make_move(location)
     current_player.moves.create(grid_location: location)
-    update_status
+    update_game_status
     computer_move
   end
 
   def computer_move
-    if current_player.user.name == 'Computer' && !self.completed?
-      current_player.moves.create(grid_location: available_moves.sample)
-      update_status
+    if current_player.user.name == 'Computer' && !completed?
+      current_player.moves.create(grid_location: available_moves.sample)      
+      update_game_status
     end
   end
 
@@ -56,19 +61,17 @@ class Game < ActiveRecord::Base
   end
 
   def game_state
-    unless @state
-      @state = [nil]*9
+      state = [nil]*9
       players.each do |player|
     
         if player.moves.any?
           symbol = player.symbol
           locations = player.moves.map(&:grid_location)
-          locations.each { |i| @state[i] = symbol }
+          locations.each { |i| state[i] = symbol }
         end
     
       end
-    end
-    @state
+    state
   end
 
   def users_turn?(user)
@@ -76,7 +79,7 @@ class Game < ActiveRecord::Base
   end
 
   def last_player
-    moves.order('created_at DESC').first.try(:player)
+    moves.order('created_at DESC').limit(1).first.try(:player)
   end
 
   def current_player
@@ -113,11 +116,12 @@ class Game < ActiveRecord::Base
   end
 
   def who_won
-    last_player if winner
+    players.joins(:scores).where("scores.result = 'win'").first
   end
 
   def who_lost
-    current_player if winner
+    players.joins(:scores).where("scores.result = 'lose'").first
+
   end
 
   def completed?
@@ -126,7 +130,7 @@ class Game < ActiveRecord::Base
 
   def result
     if winner
-      "Winner is #{last_player.user.name}"
+      "Winner is #{who_won.user.name}"
     elsif !game_state.include?(nil)
       "Draw. No winner."
     end
@@ -138,19 +142,33 @@ class Game < ActiveRecord::Base
     end
   end
 
-  def game_status
+  def update_game_status
     if winner
-      :win
+      create_scores_for_win
+      self.status = :win
     elsif !game_state.include?(nil)
-      :draw
+      create_score_for_draw
+      self.status = :draw
     else
-      :pending
+      self.status = :pending
+    end
+    save
+    puts "updated status to #{status}"
+    status
+  end
+
+  def create_scores_for_win
+    unless completed?
+      scores.create(player_id: current_player.id, result: 'lose')
+      scores.create(player_id: last_player.id, result: 'win')
     end
   end
 
-  def update_status
-    self.status = game_status
-    self.save
+  def create_score_for_draw
+    unless completed?
+      scores.create(player_id: current_player.id, result: 'draw')
+      scores.create(player_id: last_player.id, result: 'draw')
+    end
   end
 
 end

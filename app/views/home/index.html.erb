@@ -1,16 +1,6 @@
-<%= button_to 'Play Computer', computer_game_path, method: :post %>
 
-<div class='game_list'>
-  <h1>Current Games</h1>
-  <%= render(@mygames) if @mygames %>
-</div>
-
-<div class='game_list'>
-  <h1>Available games</h1>
-  <%= render(@games_to_join) if @games_to_join %>
-</div>
-
-<div class='game_list'>
-  <h1>Completed Games</h1>
-  <%= render(@completed) if @completed %>
+<div class='hero-unit'>
+  <h1>Hello</h1>
+  <p>Game portal lets you play games, such as Tic Tac Toe online with your friends. <br> <%= link_to "Sign Up", signup_path %> to get started.</p>
+  <a href='/signup' class="btn btn-primary btn-large">Sign up</a>
 </div>

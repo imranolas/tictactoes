@@ -1,4 +1,4 @@
-<h1 class='logo'>Game app</h1>
+<h1 class='logo'>Game Portal</h1>
 <div class="user"> 
     <% if current_user %>
     logged in as <%= current_user.name %> | <%= link_to 'Log out', logout_path %>
@@ -7,11 +7,13 @@
     <% end %>
 </div>
 <nav>
-  <ul>
-    <li><%= link_to 'Home', home_index_path %></li>
+  <ul class='nav'>
     <% if current_user %>
+    <li><%= link_to 'Home', games_path %></li>
     <li><%= create_link Game.new %></li>
+    <li><%= link_to "Play Computer", computer_game_path, method: :post %></li>
     <li><%= link_to 'Scoreboard', scoreboard_path %></li>
     <% end %>
   </ul>
 </nav>
+<div class="clearfix"></div>
