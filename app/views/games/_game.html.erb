@@ -12,5 +12,5 @@
     <br>Waiting for <%= game.current_player.user.name %>.
   <% end %>
 
-   <br><%= link_to 'View game', game_path(game.id) %>
+   <br><%= link_to 'View game', game_path(game.id) unless game.capacity? %>
 </p>

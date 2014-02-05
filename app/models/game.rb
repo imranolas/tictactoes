@@ -35,14 +35,12 @@ class Game < ActiveRecord::Base
 
   def make_move(location)
     current_player.moves.create(grid_location: location)
-    update_game_status
     computer_move
   end
 
   def computer_move
     if current_player.user.name == 'Computer' && !completed?
       current_player.moves.create(grid_location: available_moves.sample)      
-      update_game_status
     end
   end
 
@@ -62,9 +60,9 @@ class Game < ActiveRecord::Base
 
   def game_state
       state = [nil]*9
-      players.each do |player|
+      players(true).each do |player|
     
-        if player.moves.any?
+        if player.moves(true).any?
           symbol = player.symbol
           locations = player.moves.map(&:grid_location)
           locations.each { |i| state[i] = symbol }
