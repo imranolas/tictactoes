@@ -1,3 +1,4 @@
+<div class="game">
 <p>
   <%= game.name %><br>
   <%= game.users.map(&:name).join(" vs ") %>
@@ -14,3 +15,4 @@
 
    <br><%= link_to 'View game', game_path(game.id) unless game.capacity? %>
 </p>
+</div>

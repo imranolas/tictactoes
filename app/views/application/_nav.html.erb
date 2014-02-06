@@ -3,7 +3,7 @@
     <% if current_user %>
     logged in as <%= link_to current_user.name, current_user %> | <%= link_to 'Log out', logout_path %>
     <% else %>
-    <%= link_to 'Log in', login_path %> or <%= link_to "Sign up", signup_path %>
+    <%= link_to 'Log in', login_path %> | <%= link_to "Sign up", signup_path %>
     <% end %>
 </div>
 <div class="clearfix"></div>
@@ -12,7 +12,7 @@
   <ul class='nav'>
 
     <li><%= link_to 'Home', games_path %></li>
-    <li><%= link_to "Create a game", games_path, method: :post %></li>
+    <li><%= link_to "Start a game", games_path, method: :post %></li>
     <li><%= link_to "Play Computer", computer_game_path, method: :post %></li>
     <li><%= link_to 'Scoreboard', scoreboard_path(current_user) %></li>
     

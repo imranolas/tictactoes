@@ -9,7 +9,7 @@ load_and_authorize_resource
     @user = User.new(params[:user])
     if @user.save
       session[:user_id] = @user.id
-      redirect_to games_path
+      redirect_to games_path, notice: "Hi #{@user.name}, thanks for signing up." 
     else
       render :new
     end

@@ -27,4 +27,7 @@
     <% @game.players.each do |player| %>
       <p><%= player.symbol %> <%= player.user.name %></p>
     <% end %>
+    <% if @game.computer_is_playing? && @game.completed? %>
+    <%= button_to "Play Again", computer_game_path, method: :post %>
+    <% end %>
   </div>

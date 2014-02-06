@@ -19,6 +19,7 @@
   font-size: 14px;
   color: green;
   background-color: #111;
+  line-height: 1.2;
  }
 
  pre {
@@ -104,12 +105,6 @@ a {
   width: 280px;
 }
 
-.game_list p {
-  border-bottom: 3px dotted green;
-  margin: 10px 0;
-  padding: 10px 0;
-}
-
 .user {
 float: right;
 height: 21px;
@@ -141,16 +136,6 @@ input[type='submit'] {
   font-family: 'Press Start 2P', cursive;
 
 }
-
-// #new_game input[type='submit'] {
-//   padding: 10px;
-//   background-color: green;
-//   border: 0;
-//   font-size: 16px;
-//   color: #000;
-//   font-family: 'Press Start 2P', cursive;
-
-// }
 
 #new_game {
   margin: 20px;
@@ -247,4 +232,9 @@ tr.highlight {
 
 .pagination {
   text-align: center;
+}
+
+.game {
+  border-bottom: 3px dotted green;
+  margin-bottom: 5px;
 }

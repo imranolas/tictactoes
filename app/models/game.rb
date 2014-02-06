@@ -27,11 +27,10 @@ class Game < ActiveRecord::Base
     find_games_for(user).where('status = ? OR status = ?', 'win', 'draw')
   end
 
+####### Game methods ########
   def winning_user
     User.joins({players: :scores}, {players: :game}).where('games.id=?', self.id).where(scores: {result: 'win'})
   end
-
-####### Game methods ########
 
   def make_move(location)
     current_player.moves.create(grid_location: location)
@@ -78,7 +77,7 @@ class Game < ActiveRecord::Base
 
   def game_state
       state = [nil]*9
-      players(true).each do |player|
+      players.each do |player|
     
         if player.moves(true).any?
           symbol = player.symbol
@@ -106,6 +105,9 @@ class Game < ActiveRecord::Base
     end
   end
 
+  def computer_is_playing?
+    players.map(&:user_id).include?(1)
+  end
 
   ########### Tic Tac Toe Logic #########################
 

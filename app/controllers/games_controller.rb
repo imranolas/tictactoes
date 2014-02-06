@@ -14,7 +14,7 @@ class GamesController < ApplicationController
 
   def scoreboard
     @user = User.find_by_id(params[:id])
-    @users = User.page(params[:page])
+    @users = User.page(params[:page]).per(20)
   end
 
   def new
@@ -23,7 +23,7 @@ class GamesController < ApplicationController
   end
 
   def create
-    @game = Game.new(params[:game])
+    @game = Game.new(name: 'TicTacToe')
     @game.players.build user_id: current_user.id, symbol: 'X'
     if @game.save
       redirect_to games_path

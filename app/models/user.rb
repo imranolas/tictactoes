@@ -7,6 +7,7 @@ class User < ActiveRecord::Base
   has_many :moves, through: :players
   has_many :scores, through: :players
 
+  validates :name, presence: true
   validates :email, presence: true, uniqueness: true
   validates :password, presence: true
 
