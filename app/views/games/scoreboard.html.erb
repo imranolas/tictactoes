@@ -1,13 +1,13 @@
 <div class="scores">
-<h2>
+<h2 class='win'>
   Games Won: <%= @user.number_of_games_won %>
 </h2>
 
-<h2>
+<h2 class='lose'>
   Games Lost: <%= @user.number_of_games_lost %>
 </h2>
 
-<h2>
+<h2 class='draw'>
   Games Tied: <%= @user.number_of_games_tied %>
 </h2>
 </div>
@@ -23,9 +23,9 @@
 <% @users.each do |user| %>
   <tr class = '<%= 'highlight' if user == current_user %>'>
     <td><%= link_to user.name, user %></td>
-    <td><%= user.number_of_games_won %></td>
-    <td><%= user.number_of_games_lost %></td>
-    <td><%= user.number_of_games_tied %></td>
+    <td class='win'><%= user.number_of_games_won %></td>
+    <td class='lose'><%= user.number_of_games_lost %></td>
+    <td class='draw'><%= user.number_of_games_tied %></td>
   </tr>
   
 <% end %>

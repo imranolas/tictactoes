@@ -176,7 +176,7 @@ class Game < ActiveRecord::Base
 
   def result
     if winner
-      "Winner is #{who_won.user.name}"
+      "#{who_won.user.name} wins!"
     elsif !game_state.include?(nil)
       "Draw. No winner."
     end

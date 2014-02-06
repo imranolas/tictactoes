@@ -14,5 +14,13 @@ load_and_authorize_resource
       render :new
     end
   end
+
+  def update
+    @user = User.find(params[:id])
+    @user.update_attributes(params[:user])
+
+    redirect_to @user
+
+  end
   
 end

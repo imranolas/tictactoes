@@ -1,4 +1,4 @@
-<h1 class='logo'>Game Portal</h1>
+<h1 class='logo'><%= link_to 'MOKU', root_path %></h1>
 <div class="user"> 
     <% if current_user %>
     logged in as <%= link_to current_user.name, current_user %> | <%= link_to 'Log out', logout_path %>
@@ -8,8 +8,8 @@
 </div>
 <div class="clearfix"></div>
     <% if current_user %>
-<nav>
-  <ul class='nav'>
+<nav class='main'>
+  <ul>
 
     <li><%= link_to 'Home', games_path %></li>
     <li><%= link_to "Start a game", games_path, method: :post %></li>

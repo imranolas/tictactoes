@@ -1,8 +1,8 @@
   <div class='game_status'>
     <% if @game.completed? %>
-      <%= @game.result %>
+      <h2><%= @game.result %></h2>
     <% else %>
-      <p><%= @game.current_player.user.name %>'s turn to move</p>
+      <h2><%= @game.current_player.user.name %>'s turn to move</h2>
     <% end %>
   </div>
 
@@ -25,7 +25,7 @@
   </div>
   <div class='legend'>
     <% @game.players.each do |player| %>
-      <p><%= player.symbol %> <%= player.user.name %></p>
+      <h3><%= player.symbol %> <%= player.user.name %></h3>
     <% end %>
     <% if @game.computer_is_playing? && @game.completed? %>
     <%= button_to "Play Again", computer_game_path, method: :post %>
