@@ -11,11 +11,13 @@
   <div class='container'>
     <%= render 'nav' %>
 
-    <% flash.each do |name, msg| %>
-      <div class="flash-message flash-message-<%= name %>">
-        <%= msg %>
-      </div>
-    <% end %>
+    <div class='flash'>
+        <% flash.each do |name, msg| %>
+          <div class="flash-message flash-message-<%= name %>">
+            <%= msg %>
+          </div>
+        <% end %>
+    </div>
 
 
     <%= yield %>

@@ -1,12 +1,10 @@
 <%= form_for(@game) do |f| %>
-    <%= f.label :name, "Game Name" %>
+    <%= f.label :name, "Game name" %>
     <%= f.text_field :name %>
 
 
     <%= f.fields_for :players do |ff| %>
-        <%= ff.label :symbol, "X or O" %>
-        <%= ff.text_field :symbol %>
-
+      <%= ff.hidden_field :symbol %>
       <%= ff.hidden_field :user_id %>
     <% end %>
     <%= f.submit "Submit", :disable_with => 'Submiting...' %>

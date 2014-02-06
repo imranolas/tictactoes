@@ -1,8 +1,10 @@
 <div class='row'>
 
-  <% unless @mygames.any? && @games_to_join.any? %>
+  <% unless @mygames.any? || @games_to_join.any? %>
     <div class="game_list">
-    <p>You have no games in progress and there are no games to join. <%= link_to "Start a new game?", new_game_path %> or <%= link_to "Play the computer", computer_game_path, method: :post %></p>
+    <p>You have no games in progress and there are no games to join.
+      <br>
+     <%= link_to "Start a new game?", new_game_path %> or <%= link_to "Play the computer", computer_game_path, method: :post %></p>
     </div>
   <% end %>
 

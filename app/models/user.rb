@@ -17,7 +17,7 @@ class User < ActiveRecord::Base
 
   def games_lost
     # self.games.where(status: :win).select { |game| game.last_player.user != self }
-    self.games.joins(players: :scores).where(scores: {result: 'draw'})
+    self.games.joins(players: :scores).where(scores: {result: 'lose'})
   end
 
   def games_drawn

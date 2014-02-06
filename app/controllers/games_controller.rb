@@ -13,7 +13,8 @@ class GamesController < ApplicationController
   end
 
   def scoreboard
-    @user = current_user
+    @user = User.find_by_id(params[:id])
+    @users = User.page(params[:page])
   end
 
   def new
@@ -23,8 +24,9 @@ class GamesController < ApplicationController
 
   def create
     @game = Game.new(params[:game])
+    @game.players.build user_id: current_user.id, symbol: 'X'
     if @game.save
-      redirect_to home_index_path
+      redirect_to games_path
     else
       render :new
     end
@@ -47,7 +49,7 @@ class GamesController < ApplicationController
     else
       @game = Game.find(params[:game][:id])
       @game.update_attributes(params[:game])
-      redirect_to home_index_path
+      redirect_to games_path
     end
   end
 

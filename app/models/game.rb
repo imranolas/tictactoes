@@ -40,7 +40,25 @@ class Game < ActiveRecord::Base
 
   def computer_move
     if current_player.user.name == 'Computer' && !completed?
-      current_player.moves.create(grid_location: available_moves.sample)      
+      current_player.moves.create(grid_location: available_computer_moves.sample)      
+    end
+  end
+
+  def available_computer_moves
+    computer_win_moves = two_in_row(last_player)
+    computer_blocks_move = two_in_row(current_player)
+    computer_build_line = one_in_row(last_player)
+    
+    if computer_win_moves.any? || computer_blocks_move.any?
+      if computer_win_moves.any?
+        computer_win_moves
+      elsif computer_blocks_move.any?
+        computer_blocks_move
+      end
+    elsif computer_build_line.any?
+      computer_build_line
+    else
+      available_moves
     end
   end
 
@@ -111,6 +129,34 @@ class Game < ActiveRecord::Base
       end
     end
     nil
+  end
+
+  def two_in_row(player)
+    moves = []
+    WIN_LINES.each do |line|
+      current_line = [ game_state[line[0]], game_state[line[1]], game_state[line[2]] ]
+      
+      unless current_line.include?(player.try(:symbol))
+        if current_line.compact.length == 2
+         line.each_index{ |i| moves << line[i] if current_line[i] == nil }
+        end
+      end
+    end
+    moves
+  end
+
+  def one_in_row(player)
+    moves = []
+    WIN_LINES.each do |line|
+      current_line = [ game_state[line[0]], game_state[line[1]], game_state[line[2]] ]
+      
+      unless current_line.include?(player.try(:symbol))
+        if current_line.compact.length == 1
+         line.each_index{ |i| moves << line[i] if current_line[i] == nil }
+        end
+      end
+    end
+    moves
   end
 
   def who_won

@@ -1,4 +1,33 @@
-Games Won: <%= @user.number_of_games_won %><br>
-Games Lost: <%= @user.number_of_games_lost %><br>
-Games Tied: <%= @user.number_of_games_tied %><br>
+<div class="scores">
+<h2>
+  Games Won: <%= @user.number_of_games_won %>
+</h2>
 
+<h2>
+  Games Lost: <%= @user.number_of_games_lost %>
+</h2>
+
+<h2>
+  Games Tied: <%= @user.number_of_games_tied %>
+</h2>
+</div>
+
+<table>
+  <tr>
+  <th>NAME</th>
+  <th>WINS</th>
+  <th>LOSSES</th>
+  <th>TIES</th>
+</tr>
+
+<% @users.each do |user| %>
+  <tr class = '<%= 'highlight' if user == current_user %>'>
+    <td><%= link_to user.name, user %></td>
+    <td><%= user.number_of_games_won %></td>
+    <td><%= user.number_of_games_lost %></td>
+    <td><%= user.number_of_games_tied %></td>
+  </tr>
+  
+<% end %>
+</table>
+<%= paginate @users %>

@@ -9,4 +9,8 @@ User.create(name: 'Computer', email: 'computer', password: 'password', password_
 
 User.create(name: 'Imran', email: 'imran@imran.com', password: 'password', password_confirmation: 'password')
 
-User.create(name: 'Imran Again', email: 'imran@again.com', password: 'password', password_confirmation: 'password')
+User.create(name: 'Tim', email: 'Tim@tim.com', password: 'password', password_confirmation: 'password')
+
+User.create(name: 'Tom', email: 'Tom@tom.com', password: 'password', password_confirmation: 'password')
+
+User.create(name: 'Clem', email: 'clem@clem.com', password: 'password', password_confirmation: 'password')
