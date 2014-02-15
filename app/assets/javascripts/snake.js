@@ -1,4 +1,4 @@
-$(function() {
+$(document).ready(function() {
 var snakeApp = snakeApp || {};
 var run;
 snakeApp.curr_direction = "right";
