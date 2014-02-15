@@ -13,7 +13,7 @@ class GamesController < ApplicationController
   end
 
   def scoreboard
-    @user = User.find_by_id(params[:id])
+    @user = User.find_by_id(current_user.id)
     @users = User.page(params[:page]).per(20)
   end
 
