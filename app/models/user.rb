@@ -6,6 +6,7 @@ class User < ActiveRecord::Base
   has_many :games, through: :players
   has_many :moves, through: :players
   has_many :scores, through: :players
+  has_one :snake_score
 
   validates :name, presence: true
   validates :email, presence: true, uniqueness: true

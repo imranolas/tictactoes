@@ -45,18 +45,18 @@ class GamesController < ApplicationController
     if params[:id]
       @game = Game.find(params[:id])
       @game.make_move(params[:game][:grid_location])
-      redirect_to @game
+      # redirect_to @game
+      PrivatePub.publish_to("/play/#{@game.id}", game: @game)
     else
       @game = Game.find(params[:game][:id])
       @game.update_attributes(params[:game])
-      redirect_to games_path
+      # redirect_to games_path
+      PrivatePub.publish_to("/play/#{@game.id}", game: @game)
     end
   end
 
   def show
     @game = Game.find(params[:id])
-    # @current_player = @game.current_player
-    # @moves = @current_player.moves.build if @current_player
   end
 
 end

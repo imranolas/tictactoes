@@ -1,0 +1,10 @@
+<% publish_to "/play/#{@game.id}" do %>
+  // $('#game_partial').html('<%= escape_javascript(render( partial: 'play', locals: {game: @game} )) %>');
+  location.reload();
+  // $.ajax({
+  //   url: '/games/<%= @game.id %>',
+  //   success: function(data) {
+  //     console.log(data);
+  //   }
+  // })
+<% end %>

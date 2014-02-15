@@ -1,0 +1,14 @@
+
+    <% if current_user %>
+<nav class='main'>
+  <ul>
+    <li><%= render 'games_nav' %></li>
+    <li><%= link_to 'Home', games_path %></li>
+    <li><%= link_to "Start a game", games_path, method: :post %></li>
+    <li><%= link_to "Play Computer", computer_game_path, method: :post %></li>
+    <li><%= link_to 'Scoreboard', scoreboard_path(current_user) %></li>
+    
+  </ul>
+</nav>
+<% end %>
+<div class="clearfix"></div>

@@ -1,24 +1,31 @@
 source 'https://rubygems.org'
 
+ruby '2.0.0'
 gem 'rails', '3.2.16'
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
-gem 'sqlite3'
+gem "pg"
 gem 'cancan'
 # gem 'ransack'
 # gem 'carrierwave'
 # gem 'rmagick'
 gem 'kaminari'
+gem 'private_pub'
+gem 'thin'
+gem 'bootstrap-sass'
 
 group :development, :test do
+  gem 'sqlite3'
   gem 'pry-rails'
   gem 'pry-byebug'
   gem 'pry-stack_explorer'
   gem 'binding_of_caller'
   gem 'better_errors'
   gem "railroady"
+  gem "bullet"
+  gem "reek"
 end
 
 # Gems used only for assets and not required

@@ -1,4 +1,8 @@
 Tictactoe::Application.routes.draw do
+  get "/snakes/index"
+  get "/snakes/scores"
+  post "/snakes/create", to: "snakes#create", as: 'new_snake_score'
+
   resources :home
   resources :moves
   resources :players

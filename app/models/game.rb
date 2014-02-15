@@ -12,7 +12,8 @@ class Game < ActiveRecord::Base
 ######## Class methods to return game sets ########
 
   def self.find_games_for(user)
-    self.joins(players: :user).where(users: {id: user.id})
+    # self.joins(players: :user).includes(:users, :players).where(users: {id: user.id})
+    self.includes(:users).joins(players: :user).where(users: {id: user.id})
   end
 
   def self.users_games(user)
@@ -20,7 +21,7 @@ class Game < ActiveRecord::Base
   end
 
   def self.games_to_join(user)
-    self.joins(:players).where(starting_player: nil).where("players.user_id != ?", user.id)
+    self.includes(:players).joins(:players).where(starting_player: nil).where("players.user_id != ?", user.id)
   end
 
   def self.completed_games(user)
@@ -77,9 +78,9 @@ class Game < ActiveRecord::Base
 
   def game_state
       state = [nil]*9
-      players.each do |player|
+      players(true).includes(:moves).each do |player|
     
-        if player.moves(true).any?
+        if player.moves.any?
           symbol = player.symbol
           locations = player.moves.map(&:grid_location)
           locations.each { |i| state[i] = symbol }
