@@ -1,6 +1,6 @@
 <div class="scores">
 <h2 class='win'>
-  Your highest Score: <%= @user_score.score %>
+  Your highest Score: <%= @user_score.try(:score) %>
 </h2>
 </div>
 

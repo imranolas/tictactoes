@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
 load_and_authorize_resource
-
+  skip_before_filter :redirect_to_login, only: [:new, :create]
   def new
     @user = User.new
   end
@@ -9,7 +9,7 @@ load_and_authorize_resource
     @user = User.new(params[:user])
     if @user.save
       session[:user_id] = @user.id
-      redirect_to games_path, notice: "Hi #{@user.name}, thanks for signing up." 
+      redirect_to welcome_path, notice: "Hi #{@user.name}, thanks for signing up." 
     else
       render :new
     end

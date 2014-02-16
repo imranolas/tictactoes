@@ -19,7 +19,7 @@ class SnakesController < ApplicationController
 
   def scores
     redirect_to '/login' unless current_user
-    @scores = SnakeScore.all
+    @scores = SnakeScore.order('score DESC').limit(20)
     @user_score = current_user.snake_score
   end
 end
