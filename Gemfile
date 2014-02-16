@@ -14,7 +14,6 @@ gem 'cancan'
 gem 'kaminari'
 gem 'private_pub'
 gem 'thin'
-gem 'bootstrap-sass'
 
 group :development, :test do
   gem 'sqlite3'
