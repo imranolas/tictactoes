@@ -1,4 +1,7 @@
 class SessionsController < ApplicationController
+
+  skip_before_filter :redirect_to_login, only: [:new, :create]
+
   def new
     redirect_to '/welcome' if current_user
   end

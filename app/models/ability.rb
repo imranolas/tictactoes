@@ -10,7 +10,7 @@ class Ability
         can [:create_computer_game, :scoreboard], Game
         can :update, User, id: user.id
       else
-        cannot :manage, Game
+        cannot :manage, :all
         can :create, User
       end
 

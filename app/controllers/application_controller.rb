@@ -1,6 +1,7 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery
   helper_method :current_user, :winning_square?
+  before_filter :redirect_to_login
     
   rescue_from CanCan::AccessDenied do |exception|
     redirect_to root_url, :alert => exception.message
@@ -19,5 +20,9 @@ class ApplicationController < ActionController::Base
 
   def winning_square?(game, location)
     game.winner.include?(location) if game.status == 'win'
+  end
+
+  def redirect_to_login
+    redirect_to '/login' unless current_user
   end
 end

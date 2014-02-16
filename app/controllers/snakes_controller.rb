@@ -1,8 +1,10 @@
 class SnakesController < ApplicationController
   def index
+    redirect_to '/login' unless current_user
   end
 
   def create
+    redirect_to '/login' unless current_user
     @score = current_user.snake_score || SnakeScore.new(user_id: current_user.id )
     if params[:score].to_i > @score.score.to_i
       @score.score = params[:score] 
@@ -16,6 +18,7 @@ class SnakesController < ApplicationController
   end
 
   def scores
+    redirect_to '/login' unless current_user
     @scores = SnakeScore.all
     @user_score = current_user.snake_score
   end
