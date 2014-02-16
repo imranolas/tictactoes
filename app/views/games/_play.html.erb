@@ -11,7 +11,7 @@
     <div class="grid_item grid_num_<%= i %> <%= 'active' if winning_square?(game, i) %>">
       <% if game.game_state[i].nil? && can?(:update, game) %>
         
-          <%= form_for(game, remote: true) do |f| %>
+          <%= form_for(game) do |f| %>
             <%= f.hidden_field :grid_location, { value: i } %>
             <%= f.submit "#{game.current_player.symbol}", class: 'grid_button' %>
           <% end %>
@@ -31,4 +31,3 @@
     <%= button_to "Play Again", computer_game_path, method: :post %>
     <% end %>
   </div>
-  <%= subscribe_to "/play/#{game.id}" %>
