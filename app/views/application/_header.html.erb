@@ -1,9 +1,0 @@
-<h1 class='logo'><%= link_to 'MOKU', root_path %></h1>
-  <div class="user"> 
-      <% if current_user %>
-      logged in as <%= link_to current_user.name, current_user %> | <%= link_to 'Log out', logout_path %>
-      <% else %>
-      <%= link_to 'Log in', login_path %> | <%= link_to "Sign up", signup_path %>
-      <% end %>
-  </div>
-<div class="clearfix"></div>

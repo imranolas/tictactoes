@@ -1,0 +1,7 @@
+%span.dropdown
+  %a{href:'#', role: "button", 'data-toggle' => "dropdown"}
+    Games
+    %b.caret
+  %ul.dropdown-menu
+    %li= link_to 'Tic Tac Toe', games_path
+    %li= link_to 'Snake', snakes_index_path

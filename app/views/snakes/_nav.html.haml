@@ -1,0 +1,10 @@
+- if current_user
+  %nav.main
+    %ul
+      %li= render 'games_nav'
+      %li
+        %span.title SNAKE
+      %li= link_to 'Play Snake', snakes_index_path
+      %li= link_to 'Scoreboard', snakes_scores_path
+      
+.clearfix

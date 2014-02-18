@@ -1,0 +1,27 @@
+.scores
+  %h2.win
+    Games Won: #{@user.number_of_games_won}
+
+  %h2.lose
+    Games Lost: #{@user.number_of_games_lost}
+
+  %h2.draw
+    Games Tied: #{@user.number_of_games_tied}
+
+%table
+  %tr
+    %th NAME
+    %th WINS
+    %th LOSSES
+    %th TIES
+  %tr
+
+  - @users.each do |user|
+    %tr{ class: "#{'highlight' if user == current_user}"}
+      %td= link_to user.name, user
+      %td.win= user.number_of_games_won
+      %td.lose= user.number_of_games_lost
+      %td.draw= user.number_of_games_tied
+    </tr>
+  
+= paginate @users

@@ -1,0 +1,14 @@
+.scores
+  %h2.win Your highest Score: #{@user_score.try(:score)}
+
+%table
+  %tr
+    %th NAME
+    %th Highest score
+    %th
+
+  - @scores.each do |score|
+    %tr{ class: "#{'highlight' if score.user == current_user}" }
+      %td= link_to score.user.name, score.user
+      %td.win= score.score
+      %td.win= time_ago_in_words score.updated_at

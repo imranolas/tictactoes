@@ -1,0 +1,15 @@
+.game
+  %ul
+    %li= game.name
+    %li= game.users.map(&:name).join(" vs ")
+  
+    - if game.completed?
+      %li Completed. #{game.result}
+    - elsif game.users_turn?(current_user)
+      %li Your turn to move.
+    - elsif game.capacity?
+      %li Waiting for player to join.
+    - else
+      %li Waiting for #{game.current_player.user.name}.
+
+    %li= link_to 'View game', game_path(game.id) unless game.capacity?

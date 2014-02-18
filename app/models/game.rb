@@ -4,6 +4,7 @@ class Game < ActiveRecord::Base
   has_many :users, through: :players
   has_many :moves, through: :players
   has_many :scores
+  attr_accessor :state, :last_to_play
 
   accepts_nested_attributes_for :players
 
@@ -12,7 +13,6 @@ class Game < ActiveRecord::Base
 ######## Class methods to return game sets ########
 
   def self.find_games_for(user)
-    # self.joins(players: :user).includes(:users, :players).where(users: {id: user.id})
     self.includes(:users).joins(players: :user).where(users: {id: user.id})
   end
 
@@ -40,26 +40,12 @@ class Game < ActiveRecord::Base
 
   def computer_move
     if current_player.user.name == 'Computer' && !completed?
-      current_player.moves.create(grid_location: available_computer_moves.sample)      
+      current_player.moves.create(grid_location: available_computer_moves.sample)
     end
   end
 
   def available_computer_moves
-    computer_win_moves = two_in_row(last_player)
-    computer_blocks_move = two_in_row(current_player)
-    computer_build_line = one_in_row(last_player)
-    
-    if computer_win_moves.any? || computer_blocks_move.any?
-      if computer_win_moves.any?
-        computer_win_moves
-      elsif computer_blocks_move.any?
-        computer_blocks_move
-      end
-    elsif computer_build_line.any?
-      computer_build_line
-    else
-      available_moves
-    end
+    two_in_row(last_player) || two_in_row(current_player) || one_in_row(last_player) || available_moves
   end
 
   def available_moves
@@ -77,17 +63,20 @@ class Game < ActiveRecord::Base
   end
 
   def game_state
-      state = [nil]*9
+    unless @state
+      puts "rebuilt game state"
+      @state = [nil]*9
       players(true).includes(:moves).each do |player|
     
         if player.moves.any?
           symbol = player.symbol
           locations = player.moves.map(&:grid_location)
-          locations.each { |i| state[i] = symbol }
+          locations.each { |i| @state[i] = symbol }
         end
     
       end
-    state
+    end
+    @state
   end
 
   def users_turn?(user)
@@ -124,42 +113,41 @@ class Game < ActiveRecord::Base
     ]
 
   def winner
-    WIN_LINES.each do |line|
-      current_line = [ game_state[line[0]], game_state[line[1]], game_state[line[2]] ]
-      
-      unless current_line.include?(nil)
-        current_line.uniq.length == 1 ? (return line) : nil
+    unless @winning_line
+      WIN_LINES.each do |line|
+        current_line = [ game_state[line[0]], game_state[line[1]], game_state[line[2]] ]  
+        unless current_line.include?(nil)
+          current_line.uniq.length == 1 ? (@winning_line = line) : nil
+        end
       end
     end
-    nil
+    @winning_line
   end
 
   def two_in_row(player)
     moves = []
     WIN_LINES.each do |line|
-      current_line = [ game_state[line[0]], game_state[line[1]], game_state[line[2]] ]
-      
+      current_line = [ game_state[line[0]], game_state[line[1]], game_state[line[2]] ]   
       unless current_line.include?(player.try(:symbol))
         if current_line.compact.length == 2
          line.each_index{ |i| moves << line[i] if current_line[i] == nil }
         end
       end
     end
-    moves
+    moves if moves.any?
   end
 
   def one_in_row(player)
     moves = []
     WIN_LINES.each do |line|
       current_line = [ game_state[line[0]], game_state[line[1]], game_state[line[2]] ]
-      
       unless current_line.include?(player.try(:symbol))
         if current_line.compact.length == 1
          line.each_index{ |i| moves << line[i] if current_line[i] == nil }
         end
       end
     end
-    moves
+    moves if moves.any?
   end
 
   def who_won
@@ -168,7 +156,6 @@ class Game < ActiveRecord::Base
 
   def who_lost
     players.joins(:scores).where("scores.result = 'lose'").first
-
   end
 
   def completed?

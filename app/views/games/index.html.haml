@@ -1,0 +1,23 @@
+.row
+  - unless @mygames.any? && @games_to_join.any?
+    .game_list
+      %p You have no games in progress and/or there are no games to join.
+      %p #{link_to "Start a new game?", new_game_path} or #{link_to "Play the computer", computer_game_path, method: :post}
+
+  - if @mygames.any?
+    .game_list.span4
+      %h3 Current Games
+      = render @mygames
+      = paginate @mygames, param_name: :current_game_page
+
+  - if @games_to_join.any?
+    .game_list.span4
+      %h3 Available games
+      = render partial: 'join_game', collection: @games_to_join
+      = paginate @games_to_join, param_name: :join_games_page
+
+  - if @completed.any?
+    .game_list.span4
+      %h3 Completed Games
+      = render(@completed) if @completed
+      = paginate @completed

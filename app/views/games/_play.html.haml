@@ -1,0 +1,23 @@
+.game_status
+  - if game.completed?
+    %h2= game.result
+  - else
+    %h2 #{game.current_player.user.name}'s turn to move
+
+.board
+  - game.game_state.each_index do |i|
+    .grid_item{ class: "grid_num_#{i} #{'active' if winning_square?(game, i)}" } 
+
+      - if game.game_state[i].nil? && can?(:update, game)
+        = form_for(game) do |f|
+          = f.hidden_field :grid_location, { value: i }
+          = f.submit "#{game.current_player.symbol}", class: 'grid_button'
+      - else
+        = game.game_state[i]
+
+.legend
+  - game.players.includes(:user).each do |player|
+    %h3 #{player.symbol} #{player.user.name}
+  
+  - if game.computer_is_playing? && game.completed?
+    = button_to "Play Again", computer_game_path, method: :post

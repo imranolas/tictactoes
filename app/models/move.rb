@@ -30,7 +30,9 @@ class Move < ActiveRecord::Base
 
   private
   def update_game
+    game.state = nil
     game.update_game_status
+    game.last_to_play = nil
   end
 
 end

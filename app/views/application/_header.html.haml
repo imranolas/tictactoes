@@ -1,0 +1,8 @@
+%h1.logo= link_to 'MOKU', root_path
+.user
+  - if current_user
+    logged in as 
+    #{link_to current_user.name, current_user} | #{link_to 'Log out', logout_path}
+  - else
+    #{link_to 'Log in', login_path} | #{link_to "Sign up", signup_path}
+.clearfix

@@ -14,6 +14,8 @@ gem 'cancan'
 gem 'kaminari'
 gem 'private_pub'
 gem 'thin'
+gem 'haml-rails'
+gem 'devise'
 
 group :development, :test do
   gem 'sqlite3'
