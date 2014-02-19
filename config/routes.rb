@@ -1,4 +1,7 @@
 Tictactoe::Application.routes.draw do
+  devise_for :users
+  get '/user/:id', to: 'users#show', as: 'user'
+
   get "/snakes/index"
   get "/snakes/scores"
   post "/snakes/create", to: "snakes#create", as: 'new_snake_score'
@@ -7,15 +10,10 @@ Tictactoe::Application.routes.draw do
   resources :moves
   resources :players
   resources :games
-  resources :sessions
-  resources :users
   post '/play_computer', to: 'games#create_computer_game', as: 'computer_game'
 
   root to: 'home#index'
   get '/welcome', to: 'home#home', as: 'welcome'
-  get '/login', to: 'sessions#new', as: 'login'
-  get '/logout', to: 'sessions#destroy', as: 'logout'
-  get '/signup', to: 'users#new', as: 'signup'
   get '/play/:game_id', to: 'games#show', as: 'play'
   get '/scoreboard', to: 'games#scoreboard', as: 'scoreboard'
 

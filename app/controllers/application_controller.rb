@@ -1,28 +1,21 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery
   helper_method :current_user, :winning_square?
-  before_filter :redirect_to_login
     
   rescue_from CanCan::AccessDenied do |exception|
     redirect_to root_url, :alert => exception.message
   end
 
-    private
+  protected
 
-  def current_user
-    begin
-      @current_user ||= User.find(session[:user_id]) if session[:user_id]
-    rescue ActiveRecord::RecordNotFound
-      session.delete(:user_id)
-      @current_user = nil
-    end
+  def after_sign_in_path_for(resource)
+    welcome_path
   end
+  
+  private
 
   def winning_square?(game, location)
     game.winner.include?(location) if game.status == 'win'
   end
 
-  def redirect_to_login
-    redirect_to '/login' unless current_user
-  end
 end

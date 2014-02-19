@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
 load_and_authorize_resource
-  skip_before_filter :redirect_to_login, only: [:new, :create]
+
   def new
     @user = User.new
   end
