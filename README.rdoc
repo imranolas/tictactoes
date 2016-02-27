@@ -2,6 +2,6 @@
 
 Moku is a platform for games. Currently it offers tic-tac-toe and snake.
 
-It was built as part of General Assemb.ly WDI and whilst it works and is not recommend for production use.
+It was built as part of General Assemb.ly WDI and whilst it works it is not recommend for production use. I mostly keep it here for posterity and nostalgia.
 
 If you are considering taking the plunge at a immersive bootcamp at General Assemb.ly and would like to speak to somebody about their experience, please don't hesitate to get in touch.
